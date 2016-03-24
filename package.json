@@ -1,5 +1,5 @@
 {
-  "name": "bugsnag-js",
+  "name": "superhuman-bugsnag-js",
   "version": "2.5.0",
   "main": "src/bugsnag.js",
   "scripts": {
