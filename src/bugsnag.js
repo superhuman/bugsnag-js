@@ -18,11 +18,6 @@
     shouldCatch = true,
     ignoreOnError = 0,
 
-    // We've seen cases where individual clients can infinite loop sending us errors
-    // (in some cases 10,000+ errors per page). This limit is at the point where
-    // you've probably learned everything useful there is to debug the problem,
-    // and we're happy to under-estimate the count to save the client (and Bugsnag's) resources.
-    eventsRemaining = 10,
     // The default depth of attached metadata which is parsed before truncation. It
     // is configurable via the `maxDepth` setting.
     maxPayloadDepth = 5;
@@ -43,16 +38,8 @@
   };
 
   // ### Bugsnag.refresh
-  //
-  // Resets the Bugsnag rate limit. If you have a large single-page app, you may
-  // wish to call this in your router to avoid exception reports being thrown
-  // away.
-  //
-  // By default Bugsnag aggressively limits the number of exception reports from
-  // one page load. This protects both the client's browser and our servers in
-  // cases where exceptions are thrown in tight loops or scroll handlers.
   self.refresh = function() {
-    eventsRemaining = 10;
+    // removed
   };
 
   //
@@ -382,10 +369,9 @@
   function sendToBugsnag(details, metaData) {
     // Validate the configured API key.
     var apiKey = getSetting("apiKey");
-    if (!validateApiKey(apiKey) || !eventsRemaining) {
+    if (!validateApiKey(apiKey)) {
       return;
     }
-    eventsRemaining -= 1;
 
     // Check if we should notify for this release stage.
     var releaseStage = getSetting("releaseStage", "production");
